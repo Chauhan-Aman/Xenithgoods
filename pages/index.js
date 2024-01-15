@@ -1,118 +1,175 @@
+/* eslint-disable @next/next/no-img-element */
+import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link';
 import { Inter } from 'next/font/google'
+import Product from "../models/Product"
+import mongoose from 'mongoose'
+
+const VideoPlayer = dynamic(() => import('@/components/VideoPlayer'), { ssr: false });
+import dynamic from 'next/dynamic';
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+export default function Home({ hoodies, tshirts, stickers, mugs }) {
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">pages/index.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <>
+      <Head>
+        <title>XenithGoods - Elevate Your Shopping Experience</title>
+        <meta name="description" content="XenithGoods - Elevate Your Shopping Experience" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+        <meta name="msapplication-TileColor" content="#da532c" />
+        <meta name="theme-color" content="#ffffff" />
+      </Head>
+      <section className="text-gray-400 bg-gray-900 body-font container w-[76vw] mx-auto">
+        <div className="container px-5 py-12 md:py-24 mx-auto flex flex-wrap">
+          <div className="flex w-full mb-20 flex-wrap flex-col">
+            <p className="sm:text-5xl font-medium title-font lg:w-1/3 lg:mb-0 mb-4 text-center m-auto text-3xl text-indigo-600">XenithGoods</p>
+            <p className='text-xl text-white mx-auto mt-5 text-center'>Elevate Your Shopping Experience with XenithGoods</p>
+            <p className="lg:pl-6 lg:w-2/3 mx-auto leading-relaxed text-center mt-5 text-gray-50 text-sm">Welcome to XenithGoods, your gateway to a world where innovation, quality, and style converge seamlessly. We believe that shopping is more than a transaction; it&apos;s an experience that should transcend the ordinary. At XenithGoods, we curate a selection of goods that embody the pinnacle of excellence, catering to individuals who seek not just products, but a lifestyle elevated by sophistication and innovation.</p>
+          </div>
+          <div className="flex flex-wrap md:-m-2 -m-1">
+            <div className="flex flex-wrap w-1/2">
+              <div className="md:p-2 p-1 w-1/2">
+                <div className="w-full object-cover h-full object-center block">
+                  <VideoPlayer width={270} height={200} url={1} />
+                </div>
+              </div>
+              <div className="md:p-2 p-1 w-1/2">
+                <VideoPlayer width={270} height={200} url={2} />
+              </div>
+              <div className="md:p-2 p-1 w-full">
+                <VideoPlayer width={560} height={300} url={3} />
+              </div>
+            </div>
+            <div className="flex flex-wrap w-1/2">
+              <div className="md:p-2 p-1 w-full">
+                <VideoPlayer width={560} height={300} url={4} />
+              </div>
+              <div className="md:p-2 p-1 w-1/2">
+                <VideoPlayer width={270} height={200} url={5} />
+              </div>
+              <div className="md:p-2 p-1 w-1/2">
+                <VideoPlayer width={270} height={200} url={6} />
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+      <section className="text-gray-400 bg-gray-900 body-font">
+        <div className="container px-5 pb-20 mx-auto w-[93vw]">
+          <Link href={'/tshirts'}><h1 className='text-white pb-10 sm:pl-4 pl-2 text-lg sm:text-2xl'>Checkout Trending Tshirts &rarr;</h1></Link>
+          <div className='flex flex-wrap'>
+            {Object.keys(tshirts).map((item, index) => (
+              index < 5 && (
+                <div key={tshirts[item]._id} className="flex flex-wrap -m-4 mb-3 mx-auto shadow-xl">
+                  <div className="p-4 mx-0 w-full">
+                    <Link passHref={true} href={`/product/${tshirts[item].slug}`} className="block relative h-50 w-60 rounded overflow-hidden">
+                      <img alt="ecommerce" className="object-cover object-center w-72 h-80 block" src={tshirts[item].img} />
+                    </Link>
+                    <div className="mt-4">
+                      <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">TSHIRT</h3>
+                      <h2 className="text-white title-font text-lg font-medium">{tshirts[item].title}</h2>
+                      <p className="mt-1">₹{tshirts[item].price}</p>
+                    </div>
+                  </div>
+                </div>
+              )
+            ))}
+          </div>
+        </div>
+      </section >
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+      <section className="text-gray-400 bg-gray-900 body-font">
+        <div className="container px-5 pb-20 mx-auto w-[93vw]">
+          <Link href={'/hoodies'}><h1 className='text-white pb-10 sm:pl-4 pl-2 text-lg sm:text-2xl'>Checkout Trending Hoodies &rarr;</h1></Link>
+          <div className='flex flex-wrap'>
+            {Object.keys(hoodies).map((item, index) => (
+              index < 5 && (
+                <div key={hoodies[item]._id} className="flex flex-wrap -m-4  mb-3 mx-auto shadow-xl">
+                  <div className=" p-2 mx-0 w-full">
+                    <Link passHref={true} href={`/product/${hoodies[item].slug}`} className="block relative h-50 w-64 rounded overflow-hidden">
+                      <img alt="ecommerce" className="object-fill object-center w-76 h-80 block" src={hoodies[item].img} />
+                    </Link>
+                    <div className="mt-4">
+                      <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">HOODIE</h3>
+                      <h2 className="text-white title-font text-lg font-medium">{hoodies[item].title}</h2>
+                      <p className="mt-1">₹{hoodies[item].price}</p>
+                    </div>
+                  </div>
+                </div>
+              )
+            ))}
+          </div>
+        </div>
+      </section >
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+      <section className="text-gray-400 bg-gray-900 body-font">
+        <div className="container px-5 pb-20 mx-auto w-[93vw]">
+          <Link href={'/stickers'}><h1 className='text-white pb-10 sm:pl-4 pl-2 text-lg sm:text-2xl mb-5'>Checkout Trending Stickers &rarr;</h1></Link>
+          <div className="flex flex-wrap -m-4">
+          {Object.keys(stickers).map((item, index) => (
+              index < 5 && (
+                <div key={stickers[item]._id} className="flex flex-wrap -m-4  mb-3 mx-auto shadow-xl">
+                  <div className=" p-2 mx-0 w-full">
+                    <Link passHref={true} href={`/product/${stickers[item].slug}`} className="block relative h-50 w-64 rounded overflow-hidden">
+                      <img alt="ecommerce" className="object-fill object-center w-72 h-80 block" src={stickers[item].img} />
+                    </Link>
+                    <div className="mt-4">
+                      <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">STICKER</h3>
+                      <h2 className="text-white title-font text-lg font-medium">{stickers[item].title}</h2>
+                      <p className="mt-1">₹{stickers[item].price}</p>
+                    </div>
+                  </div>
+                </div>
+              )
+            ))}
+          </div>
+        </div>
+      </section >
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      <section className="text-gray-400 bg-gray-900 body-font">
+        <div className="container px-5 pb-20 mx-auto w-[93vw]">
+          <Link href={'/mugs'}><h1 className='text-white pb-10 sm:pl-4 pl-2 text-lg sm:text-2xl'>Checkout Trending Mugs &rarr;</h1></Link>
+          <div className="flex flex-wrap -m-4">
+            <div className="lg:w-1/4 md:w-1/2 p-4 w-full">
+              <a className="block relative h-48 rounded overflow-hidden">
+                <img alt="ecommerce" className="object-cover object-center w-full h-full block" src="https://dummyimage.com/420x260" />
+              </a>
+              <div className="mt-4">
+                <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">CATEGORY</h3>
+                <h2 className="text-white title-font text-lg font-medium">The Catalyzer</h2>
+                <p className="mt-1">$16.00</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section >
+    </>
   )
+}
+
+export async function getServerSideProps(context) {
+  if (!mongoose.connections[0].readyState) {
+    await mongoose.connect(process.env.MONGO_URI)
+  }
+  let tshirts = await Product.find({ category: 'tshirt' })
+  let hoodies = await Product.find({ category: 'hoodies' })
+  let stickers = await Product.find({ category: 'sticker' })
+  let mugs = await Product.find({ category: 'mug' })
+
+  return {
+    props: {
+      tshirts: JSON.parse(JSON.stringify(tshirts)),
+      hoodies: JSON.parse(JSON.stringify(hoodies)),
+      stickers: JSON.parse(JSON.stringify(stickers)),
+      mugs: JSON.parse(JSON.stringify(mugs))
+    },
+  }
 }
