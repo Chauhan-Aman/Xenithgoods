@@ -9,14 +9,15 @@ export default function App({ Component, pageProps }) {
   const router = useRouter();
 
   const [navbarshow, setNavbarshow] = useState(true)
-  let exempted = ['/admin', '/admin/add', '/admin/allorders', '/admin/allproducts', '/admin/imageUploader']
   useEffect(() => {
+    let exempted = ['/admin', '/admin/add', '/admin/allorders', '/admin/allproducts', '/admin/imageUploader']
     Object.keys(cart).length !== 0 && setNavbarshow(true)
     if (exempted.includes(router.pathname)) {
       setNavbarshow(false)
     } else {
       setNavbarshow(true)
     }
+    //eslint-disable-next-line
   }, [router.pathname])
 
   const [cart, setCart] = useState({})
@@ -83,6 +84,7 @@ export default function App({ Component, pageProps }) {
       setUser({ value: myuser.token, email: myuser.email })
     }
     setKey(Math.random())
+    //eslint-disable-next-line
   }, [router.query])
 
   const Logout = () => {

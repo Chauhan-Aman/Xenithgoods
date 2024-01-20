@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -18,6 +19,7 @@ const MyOrder = ({ order, clearCart }) => {
     if (router.query.clearCart == 1) {
       clearCart()
     }
+    //eslint-disable-next-line
   }, [])
 
 

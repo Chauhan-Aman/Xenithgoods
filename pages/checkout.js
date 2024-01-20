@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
 import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
@@ -26,6 +27,7 @@ const Checkout = ({ cart, clearCart, subTotal, addToCart, removeFromCart }) => {
       setEmail(myuser.email)
       fetchData(myuser.token)
     }
+    //eslint-disable-next-line
   }, [])
 
 

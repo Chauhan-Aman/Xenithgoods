@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -23,6 +24,7 @@ const Navbar = ({ isAdmin, user, Logout, cart, addToCart, removeFromCart, clearC
         } else {
             setSidebar(true)
         }
+        //eslint-disable-next-line
     }, [])
 
     const toggleCart = () => {
@@ -49,6 +51,7 @@ const Navbar = ({ isAdmin, user, Logout, cart, addToCart, removeFromCart, clearC
         return () => {
             window.removeEventListener('resize', handleResize);
         };
+        //eslint-disable-next-line
     }, []);
 
     return (

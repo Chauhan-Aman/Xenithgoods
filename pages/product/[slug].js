@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Product from "../../models/Product"
@@ -23,6 +24,7 @@ const Slug = ({ addToCart, buyNow, product, variants, error }) => {
             setColor(product.color)
             setSize(product.size)
         }
+        //eslint-disable-next-line
     }, [router.query])
 
 
