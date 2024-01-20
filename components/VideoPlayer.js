@@ -1,4 +1,3 @@
-// Import React only for the client
 import { useEffect, useState } from 'react';
 
 const VideoPlayer = ({ width, height, url }) => {

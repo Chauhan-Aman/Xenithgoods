@@ -1,19 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Link from 'next/link';
 import Head from 'next/head';
 import Sidebar from './Admincomponents/Sidebar';
-import { useRouter } from 'next/router'
 
 const Index = ({ isAdmin }) => {
-
-  // const router = useRouter()
-
-  // useEffect(() => {
-  //   if (!isAdmin) {
-  //     router.push('/')
-  //   }
-  //   //eslint-disable-next-line
-  // }, [])
 
   return (
     <>

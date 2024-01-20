@@ -1,23 +1,19 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
-import { Combobox } from '@headlessui/react'
 import Sidebar from './Admincomponents/Sidebar'
-
-import Product from "../../models/Product"
-import mongoose from 'mongoose'
-
 import { useRouter } from 'next/router'
 
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-const Add = ({ slugs, isAdmin }) => {
+const Add = ({ isAdmin }) => {
 
   const [title, setTitle] = useState('')
   const [slug, setSlug] = useState('')
   const [desc, setDesc] = useState('')
   const [img, setImg] = useState('')
+  const [type, setType] = useState('')
   const [category, setCategory] = useState('')
   const [size, setSize] = useState('')
   const [color, setColor] = useState('')
@@ -25,23 +21,12 @@ const Add = ({ slugs, isAdmin }) => {
   const [availableQty, setAvailableQty] = useState()
   const [imgupload, setImgupload] = useState()
 
-  const [selectedSlug, setSelectedSlug] = useState('')
-  const [query, setQuery] = useState('')
-
-  const filteredSlug =
-    query === ''
-      ? slugs
-      : slugs.filter((slug) => {
-        return slug.toLowerCase().includes(query.toLowerCase())
-      })
-
   const handleChange = async (e) => {
 
     if (e.target.name === 'title') {
       setTitle(e.target.value)
     }
     else if (e.target.name === 'slug') {
-      setQuery(e.target.value)
       setSlug(e.target.value)
     }
     else if (e.target.name === 'desc') {
@@ -49,6 +34,9 @@ const Add = ({ slugs, isAdmin }) => {
     }
     else if (e.target.name === 'img') {
       setImg(e.target.value)
+    }
+    else if (e.target.name === 'type') {
+      setType(e.target.value)
     }
     else if (e.target.name === 'category') {
       setCategory(e.target.value)
@@ -83,13 +71,6 @@ const Add = ({ slugs, isAdmin }) => {
 
   const router = useRouter()
 
-  // useEffect(() => {
-  //   if (!isAdmin) {
-  //     router.push('/error')
-  //   }
-  //   //eslint-disable-next-line
-  // }, [])
-
   const AddProduct = async () => {
 
     let data = { title, slug, desc, img: img ? img : imgupload, category, size, color, price, availableQty }
@@ -115,7 +96,7 @@ const Add = ({ slugs, isAdmin }) => {
         progress: undefined,
         theme: "dark",
       });
-      router.push('/admin')
+      // router.push('/admin')
     } else {
       toast.error("Error Adding Product! \n Duplicate Slug", {
         position: "top-left",
@@ -165,19 +146,8 @@ const Add = ({ slugs, isAdmin }) => {
               </div>
               <div className='px-2 md:w-1/2 w-full'>
                 <div className=" mb-4 ">
-                  {/* <label htmlFor="slug" className="leading-7 text-sm text-gray-300">Slug</label>
-                  <input onChange={handleChange} value={slug} type="text" id="slug" name="slug" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" /> */}
-                  <Combobox value={selectedSlug} onChange={setSelectedSlug}>
-                    <label htmlFor="slug" className="leading-7 text-sm text-gray-300">Slug</label>
-                    <Combobox.Input onChange={handleChange} value={slug} id="slug" name="slug" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" autoComplete='off' />
-                    <Combobox.Options className="h-[40vh] overflow-y-scroll sm:w-[39vw] w-[76vw] absolute z-100 cursor-pointer bg-gray-700 rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 leading-8 transition-colors duration-200 ease-in-out">
-                      {filteredSlug.map((slug) => (
-                        <Combobox.Option className='text-white hover:bg-violet-700 py-1 px-3' key={slug} onClick={() => setSlug(slug)}>
-                          {slug}
-                        </Combobox.Option>
-                      ))}
-                    </Combobox.Options>
-                  </Combobox>
+                  <label htmlFor="slug" className="leading-7 text-sm text-gray-300">Slug</label>
+                  <input onChange={handleChange} value={slug} type="text" id="slug" name="slug" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
                 </div>
               </div>
             </div>
@@ -197,13 +167,19 @@ const Add = ({ slugs, isAdmin }) => {
               <div>
                 <div className='px-2 w-full'>
                   <div className="md:mt-3 mt-0 md:mb-0 mb-4">
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="imgupload">Or Upload file</label>
+                    <label className="block mb-2 text-sm font-medium text-gray-300 dark:text-white" htmlFor="imgupload">Or Upload file</label>
                     <input onClick={Resetimageurl} onChange={handleChange} name='imgupload' className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-200 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="imgupload" type="file" />
                   </div>
                 </div>
               </div>
             </div>
             <div className='flex md:flex-row flex-col mx-auto my-2'>
+              <div className='px-2 md:w-1/2 w-full'>
+                <div className=" mb-4">
+                  <label htmlFor="type" className="leading-7 text-sm text-gray-300">Type</label>
+                  <input onChange={handleChange} value={type} type="text" id="type" name="type" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+                </div>
+              </div>
               <div className='px-2 md:w-1/2 w-full'>
                 <div className=" mb-4">
                   <label htmlFor="category" className="leading-7 text-sm text-gray-300">Category</label>
@@ -252,20 +228,6 @@ const Add = ({ slugs, isAdmin }) => {
       </div>}
     </>
   )
-}
-
-export async function getServerSideProps(context) {
-  if (!mongoose.connections[0].readyState) {
-    await mongoose.connect(process.env.MONGO_URI)
-  }
-
-  let products = await Product.find({}, 'slug')
-
-  const slugs = products.map(product => product.slug);
-
-  return {
-    props: { slugs: slugs },
-  }
 }
 
 export default Add

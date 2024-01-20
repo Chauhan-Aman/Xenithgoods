@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import Link from 'next/link';
 import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
 import { BsFillBagCheckFill } from "react-icons/bs";
-import Link from 'next/link';
-import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Script from 'next/script'
 import { ToastContainer, toast } from 'react-toastify'
@@ -20,8 +19,6 @@ const Checkout = ({ cart, clearCart, subTotal, addToCart, removeFromCart }) => {
   const [disabled, setDisabled] = useState(true)
   const [user, setUser] = useState({ value: null })
 
-  const router = useRouter()
-
   useEffect(() => {
     const myuser = JSON.parse(localStorage.getItem('myuser'))
     if (myuser && myuser.token) {
@@ -29,9 +26,6 @@ const Checkout = ({ cart, clearCart, subTotal, addToCart, removeFromCart }) => {
       setEmail(myuser.email)
       fetchData(myuser.token)
     }
-    // else {
-    //   router.push('/login')
-    // }
   }, [])
 
 
@@ -241,11 +235,12 @@ const Checkout = ({ cart, clearCart, subTotal, addToCart, removeFromCart }) => {
                 <div className='relative rounded overflow-hidden flex flex-col justify-center items-center mr-4'>
                   <img alt="item" className="rounded object-cover object-center sm:w-24 sm:h-24 w-14 h-14 block" src={cart[k].img} />
                 </div>
-                <div className="flex-grow">
-                  <h2 className="text-black text-sm title-font sm:text-lg font-medium">{cart[k].name}</h2>
+                <Link className="flex-grow" passHref={true} href={`/product/${cart[k].slug}`}>
+                  <h2 className="text-black text-sm title-font sm:text-lg font-medium">{cart[k].name.split('-')[1]}</h2>
+                  <h2 className="text-gray-900 text-xs title-font sm:text-sm font-medium">{cart[k].name.split('-')[0]}</h2>
                   <p className="leading-relaxed text-sm sm:text-base mb-2 text-stone-950">({cart[k].size}/{cart[k].variant})</p>
                   <p className="leading-relaxed text-base font-bold text-stone-950">₹{cart[k].price}</p>
-                </div>
+                </Link>
                 <div className='flex items-center justify-center w-1/3 font-semibold text-lg'>
                   <AiFillMinusCircle onClick={() => { removeFromCart(k, 1, cart[k].price, cart[k].name, cart[k].size, cart[k].variant) }} className='cursor-pointer text-indigo-950' />
                   <span className='mx-2 text-sm'>{cart[k].qty}</span>
@@ -265,15 +260,15 @@ const Checkout = ({ cart, clearCart, subTotal, addToCart, removeFromCart }) => {
               </div>
               <div className='flex justify-between w-full'>
                 <p className='font-medium text-start'>Shipping estimate</p>
-                <p className='font-semibold pr-1'>₹40</p>
+                <p className='font-semibold pr-1'>₹60</p>
               </div>
               <div className='flex justify-between w-full pb-5'>
                 <p className='font-medium '>Tax estimate</p>
-                <p className='font-semibold pr-1'>₹18</p>
+                <p className='font-semibold pr-1'>₹{Math.floor(subTotal * (0.03))}</p>
               </div>
               <div className='flex justify-between w-full border-t-2 border-gray-400 pt-2'>
                 <p className='font-medium text-lg'>Order total</p>
-                <p className='font-semibold pr-1'>₹{subTotal + 40 + 18}</p>
+                <p className='font-semibold pr-1'>₹{subTotal + 60 + Math.floor(subTotal * (0.03))}</p>
               </div>
             </nav>
             <div>

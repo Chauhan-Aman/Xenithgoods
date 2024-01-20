@@ -15,6 +15,7 @@ const handler = async (req, res) => {
                     slug: req.body[i].slug,
                     desc: req.body[i].desc,
                     img: req.body[i].img,
+                    type: req.body[i].type,
                     category: req.body[i].category,
                     size: req.body[i].size,
                     color: req.body[i].color,

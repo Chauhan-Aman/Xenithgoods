@@ -1,84 +1,219 @@
-import React from 'react'
-import Link from 'next/link'
+import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Product from "../models/Product"
 import mongoose from 'mongoose'
 
+import { Input, CheckboxGroup, Checkbox, Slider, Button } from '@nextui-org/react'
+import { CiSearch } from "react-icons/ci";
+import { IoFilterSharp } from "react-icons/io5";
+import Card from '@/components/Card'
+
 const Hoodies = ({ products }) => {
-  return (
-    <div>
-       <Head>
-        <title>Hoodies - XenithGoods</title>
-        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0" />
-      </Head>
-      <section className="min-h-screen text-gray-600 body-font">
-        <div className="container px-5 md:py-24 py-12 mx-auto">
-          <div className="flex justify-center flex-wrap -m-4  mx-5 text-center">
-            {Object.keys(products).length === 0 && <p className='text-gray-50'>Sorry all the Hoodies are currently out of stock. New stock coming soon. Stay Tuned!</p>}
-            {Object.keys(products).map((item) => (
-              <div key={products[item]._id} className="lg:w-1/5 md:w-1/2 p-4 w-full cursor-pointer shadow-xl m-5">
-                <Link passHref={true} href={`/product/${products[item].slug}`}>
-                  <div className="block relative rounded overflow-hidden">
-                    <img alt="ecommerce" className="m-auto h-[30vh] md:h-[36vh] block" src={products[item].img} />
-                  </div>
-                  <div className="mt-4 text-center md:text-left">
-                    <h3 className="text-gray-400 text-xs tracking-widest title-font mb-1">Hoodies</h3>
-                    <h2 className="text-gray-50 title-font text-lg font-medium">{products[item].title}</h2>
-                    <p className="mt-2 mb-4 text-gray-100">₹{products[item].price}</p>
-                    <div className="mt-1">
-                      {products[item].size.includes('S') && <span className='border border-gray-300 px-2 py-1 mx-1 text-gray-400'>S</span>}
-                      {products[item].size.includes('M') && <span className='border border-gray-300 px-2 py-1 mx-1 text-gray-400'>M</span>}
-                      {products[item].size.includes('L') && <span className='border border-gray-300 px-2 py-1 mx-1 text-gray-400'>L</span>}
-                      {products[item].size.includes('XL') && <span className='border border-gray-300 px-2 py-1 mx-1 text-gray-400'>XL</span>}
-                      {products[item].size.includes('XXL') && <span className='border border-gray-300 px-2 py-1 mx-1 text-gray-400'>XXL</span>}
+
+    const [query, setQuery] = useState('')
+    const [sizebox, setSizebox] = useState([])
+    const [colorbox, setColorbox] = useState([])
+    const [typebox, setTypebox] = useState([])
+    const [price, setPrice] = useState([500,12500])
+
+    const [isOpen, setIsOpen] = useState(true)
+    const [isResp, setIsResp] = useState(false)
+
+    const filteredProducts =
+        query === ''
+            ? Object.values(products)
+            : Object.values(products).filter((product) => {
+                return product.title.toLowerCase().includes(query.toLowerCase());
+            });
+
+    const SearchChange = (e) => {
+        if (e.target.name === 'search') {
+            setQuery(e.target.value)
+        }
+    }
+
+    const handleChange = (value, name) => {
+        if (name === 'sizebox') {
+            setSizebox(value);
+        } else if (name === 'colorbox') {
+            setColorbox(value);
+        } else if (name === 'typebox') {
+            setTypebox(value);
+        } else if (name === 'price') {
+            setPrice(value);
+        }
+    };
+
+    useEffect(() => {
+        const updateRes = () => {
+            if (window.innerWidth < 765) {
+                setIsOpen(false)
+                setIsResp(true)
+            } else {
+                setIsOpen(true)
+                setIsResp(false)
+            }
+        };
+
+        updateRes();
+
+        const handleResize = () => {
+            updateRes();
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+
+    return (
+        <div>
+            <Head>
+                <title>HOODIES - XenithGoods</title>
+                <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0" />
+            </Head>
+            <div className='flex'>
+                {isResp && <Button variant='light' className={`fixed ${isResp ? "top-32 left-0 mb-10" : "top-24  left-5"} z-50 flex justify-start w-fit text-white items-center`} onClick={() => setIsOpen(!isOpen)}>
+                    <IoFilterSharp />
+                    <p className='ml-2'>Filters</p>
+                </Button>}
+                <div className={` ${isResp ? 'fixed z-40 overflow-y-auto' : 'sticky top-16 bottom-0'} flex flex-col justify-between sm:h-[91vh] h-[83vh] w-72 bg-slate-700 pr-8 pl-6 pt-10 pb-10 text-white transition-all ${isOpen ? 'left-0 translate-x-0' : '-left-96 -translate-x-80'}`}>
+                    <div className='flex flex-col'>
+                        {!isResp && <div className='flex justify-start w-fit text-white items-center'>
+                            <IoFilterSharp />
+                            <p className='ml-2'>Filters</p>
+                        </div>}
+                        <div className='mb-5 mt-10'>
+                            <Slider
+                                label="Price Range"
+                                size="sm"
+                                step={1500}
+                                showSteps={true}
+                                maxValue={12500}
+                                minValue={500}
+                                aria-label="Price"
+                                defaultValue={[500,12500]}
+                                className="max-w-md"
+                                name='price'
+                                onChange={(value) => handleChange(value, 'price')}
+                            />
+                        </div>
+                        <div className='my-2 mb-6'>
+                            <CheckboxGroup
+                                label="Category :"
+                                defaultValue={[]}
+                                classNames={{
+                                    label: "text-white text-md mb-2 pl-1",
+                                }}
+                                orientation='horizontal'
+                                disableAnimation='false'
+                                name='typebox'
+                                onChange={(values) => handleChange(values, 'typebox')}
+                            >
+                                <Checkbox value="Hoodie" size='sm' color='default'><p className='text-gray-300 w-20'>Hoodie</p></Checkbox>
+                            </CheckboxGroup>
+                        </div>
+                        <div className='my-2 mb-4'>
+                            <CheckboxGroup
+                                label="Select Colors :"
+                                defaultValue={[]}
+                                classNames={{
+                                    label: "text-white text-md mb-2 pl-1",
+                                }}
+                                orientation='horizontal'
+                                disableAnimation='false'
+                                name='sizebox'
+                                onChange={(values) => handleChange(values, 'colorbox')}
+                            >
+                                <Checkbox value="red" size='sm' color='danger'><p className='text-red-400 w-20'>Red</p></Checkbox>
+                                <Checkbox value="blue" size='sm' color='primary'><p className='text-blue-400 w-20'>Blue</p></Checkbox>
+                                <Checkbox value="black" size='sm' color='default'><p className='text-black w-20'>Black</p></Checkbox>
+                                <Checkbox value="green" size='sm' color='success'><p className='text-green-400 w-20'>Green</p></Checkbox>
+                                <Checkbox value="yellow" size='sm' color='default'><p className='text-yellow-400 w-20'>Yellow</p></Checkbox>
+                                <Checkbox value="purple" size='sm' color='secondary'><p className='text-purple-400 w-20'>Purple</p></Checkbox>
+                                <Checkbox value="orange" size='sm' color='warning'><p className='text-orange-400 w-20'>Orange</p></Checkbox>
+                                <Checkbox value="white" size='sm' color='default'><p className='text-white w-20'>White</p></Checkbox>
+                                <Checkbox value="gray" size='sm' color='default'><p className='text-gray-400 w-20'>Gray</p></Checkbox>
+                                <Checkbox value="pink" size='sm' color='default'><p className='text-pink-400 w-20'>Pink</p></Checkbox>
+                            </CheckboxGroup>
+                        </div>
+                        <div className='my-2 mb-6'>
+                            <CheckboxGroup
+                                label="Select Sizes :"
+                                defaultValue={[]}
+                                classNames={{
+                                    label: "text-white text-md mb-2 pl-1",
+                                }}
+                                orientation='horizontal'
+                                disableAnimation='false'
+                                name='sizebox'
+                                onChange={(values) => handleChange(values, 'sizebox')}
+                            >
+                                <Checkbox value="S" size='sm' color='default'><p className='text-white w-8'>S</p></Checkbox>
+                                <Checkbox value="M" size='sm' color='default'><p className='text-white w-8'>M</p></Checkbox>
+                                <Checkbox value="L" size='sm' color='default'><p className='text-white w-8'>L</p></Checkbox>
+                                <Checkbox value="XL" size='sm' color='default'><p className='text-white w-8'>XL</p></Checkbox>
+                                <Checkbox value="XXL" size='sm' color='default'><p className='text-white w-8'>XXL</p></Checkbox>
+                            </CheckboxGroup>
+                        </div>
                     </div>
-                    <div className='mt-5'>
-                      {products[item].color.includes('red') && <button className="border-2 border-gray-300 ml-1 bg-red-700 rounded-full w-6 h-6 focus:outline-none"></button>}
-                      {products[item].color.includes('white') && <button className="border-2 border-gray-900 ml-1 bg-white rounded-full w-6 h-6 focus:outline-none"></button>}
-                      {products[item].color.includes('blue') && <button className="border-2 border-gray-300 ml-1 bg-blue-700 rounded-full w-6 h-6 focus:outline-none"></button>}
-                      {products[item].color.includes('black') && <button className="border-2 border-gray-300 ml-1 bg-black rounded-full w-6 h-6 focus:outline-none"></button>}
-                      {products[item].color.includes('green') && <button className="border-2 border-gray-300 ml-1 bg-green-700 rounded-full w-6 h-6 focus:outline-none"></button>}
-                      {products[item].color.includes('yellow') && <button className="border-2 border-gray-300 ml-1 bg-yellow-700 rounded-full w-6 h-6 focus:outline-none"></button>}
-                      {products[item].color.includes('purple') && <button className="border-2 border-gray-300 ml-1 bg-purple-700 rounded-full w-6 h-6 focus:outline-none"></button>}
+                    <div>
+                        <Input
+                            classNames={{
+                                base: "max-w-full min-w-full sm:max-w-[13rem] sm:min-w-[15rem] h-10 bg-indigo-100 rounded",
+                                mainWrapper: "h-full",
+                                input: "text-small",
+                                inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+                            }}
+                            placeholder="Type to search..."
+                            size="sm"
+                            startContent={<CiSearch size={18} />}
+                            type="search"
+                            name='search'
+                            onChange={SearchChange}
+                        />
                     </div>
-                  </div>
-                </Link>
-              </div>
-            ))}
-          </div>
+                </div>
+
+                <Card type={'Hoodies'} products={filteredProducts} CheckSize={sizebox} CheckColor={colorbox} CheckType={typebox} price={price} />
+
+            </div>
         </div>
-      </section>
-    </div>
-  )
+    )
 }
-
 export async function getServerSideProps(context) {
-  if (!mongoose.connections[0].readyState) {
-    await mongoose.connect(process.env.MONGO_URI)
-  }
-  let products = await Product.find({ category: 'hoodies' })
+    if (!mongoose.connections[0].readyState) {
+        await mongoose.connect(process.env.MONGO_URI)
+    }
+    let products = await Product.find({ category: 'hoodie' })
 
-  let hoods = {}
-  for (let item of products) {
-    if (item.title in hoods) {
-      if (!hoods[item.title].color.includes(item.color) && item.availableQty > 0) {
-        hoods[item.title].color.push(item.color)
-      }
-      if (!hoods[item.title].size.includes(item.size) && item.availableQty > 0) {
-        hoods[item.title].size.push(item.size)
-      }
+    let hoodies = {}
+    for (let item of products) {
+        if (item.title in hoodies) {
+            if (!hoodies[item.title].color.includes(item.color) && item.availableQty > 0) {
+                hoodies[item.title].color.push(item.color)
+            }
+            if (!hoodies[item.title].size.includes(item.size) && item.availableQty > 0) {
+                hoodies[item.title].size.push(item.size)
+            }
+        }
+        else {
+            hoodies[item.title] = JSON.parse(JSON.stringify(item))
+            if (item.availableQty > 0) {
+                hoodies[item.title].color = [item.color]
+                hoodies[item.title].size = [item.size]
+            }
+            else {
+                hoodies[item.title].color = []
+                hoodies[item.title].size = []
+            }
+        }
     }
-    else {
-      hoods[item.title] = JSON.parse(JSON.stringify(item))
-      if (item.availableQty > 0) {
-        hoods[item.title].color = [item.color]
-        hoods[item.title].size = [item.size]
-      }
+    return {
+        props: { products: JSON.parse(JSON.stringify(hoodies)) },
     }
-  }
-  return {
-    props: { products: JSON.parse(JSON.stringify(hoods)) },
-  }
 }
 
 export default Hoodies

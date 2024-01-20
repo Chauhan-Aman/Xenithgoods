@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
 import Sidebar from './Admincomponents/Sidebar'
 
-import { useRouter } from 'next/router'
-
 import Product from "../../models/Product"
 import mongoose from 'mongoose'
 
-import { Modal, Button, useDisclosure } from "@nextui-org/react";
+import { Input, Modal, Button, useDisclosure } from "@nextui-org/react";
+import { CiSearch } from "react-icons/ci";
 
 import ModalContainer from './Admincomponents/modal';
 
@@ -23,14 +22,37 @@ const Allproducts = ({ products, isAdmin }) => {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
-    // const router = useRouter()
+    const [query, setQuery] = useState('')
 
-    // useEffect(() => {
-    //     if (!isAdmin) {
-    //         router.push('/')
-    //     }
-    //     //eslint-disable-next-line
-    // }, [])
+    const filteredProducts =
+        query === ''
+            ? Object.values(products)
+            : Object.values(products).filter((product) => {
+                return product.title.toLowerCase().includes(query.toLowerCase());
+            });
+
+    const SearchChange = (e) => {
+        if (e.target.name === 'search') {
+            setQuery(e.target.value)
+        }
+    }
+
+    const sizeSpan = (size) => { return (<span className='border border-gray-300 px-2 py-1 mx-1 text-gray-400'>{size}</span>) }
+
+    const colorButton = (color) => {
+        if (color == 'black' || color == 'white') {
+            return (<button className={`border-2 border-gray-300 ml-1 bg-${color} rounded-full w-6 h-6 focus:outline-none`}></button>)
+        }
+        else if (color == 'yellow') {
+            return (<button className={`border-2 border-gray-300 ml-1 bg-${color}-400 rounded-full w-6 h-6 focus:outline-none`}></button>)
+        }
+        else if (color == 'gray' || color == 'pink') {
+            return (<button className={`border-2 border-gray-300 ml-1 bg-${color}-500 rounded-full w-6 h-6 focus:outline-none`}></button>)
+        }
+        else {
+            return (<button className={`border-2 border-gray-300 ml-1 bg-${color}-700 rounded-full w-6 h-6 focus:outline-none`}></button>)
+        }
+    }
 
     return (
         <>
@@ -43,36 +65,57 @@ const Allproducts = ({ products, isAdmin }) => {
                 <div>
                     <section className="min-h-screen text-gray-600 body-font">
                         <div className="container px-5 md:py-12 py-6 mx-auto">
-                            <h1 className='font-bold text-3xl text-center mb-8 text-gray-100 font-mono'>All Products</h1>
+                            <div className='flex sm:flex-row flex-col sm:justify-between justify-center sm:px-28 px-0'>
+                                <h1 className='font-bold text-3xl text-center mb-8 text-gray-100 font-mono'>All Products</h1>
+                                <div className='flex justify-center ml-10'>
+                                    <Input
+                                        classNames={{
+                                            base: "max-w-fit min-w-fit sm:max-w-[13rem] sm:min-w-[15rem] h-10 bg-indigo-100 rounded",
+                                            mainWrapper: "h-full",
+                                            input: "text-small",
+                                            inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+                                        }}
+                                        placeholder="Type to search..."
+                                        size="sm"
+                                        startContent={<CiSearch size={18} />}
+                                        type="search"
+                                        name='search'
+                                        onChange={SearchChange}
+                                    />
+                                </div>
+                            </div>
                             <div className="flex justify-center flex-wrap -m-4  mx-5 text-center">
                                 {Object.keys(products).length === 0 && <p className='text-gray-50'>No Product is Added</p>}
-                                {Object.keys(products).map((item) => (
-                                    <div key={products[item]._id} className="lg:w-1/5 md:w-1/2 p-4 w-full shadow-xl m-5">
+                                {Object.keys(filteredProducts).map((item) => (
+                                    <div key={filteredProducts[item]._id} className="lg:w-1/5 md:w-1/2 p-4 w-full shadow-xl m-5">
                                         <div className="block relative rounded overflow-hidden">
-                                            <img alt="ecommerce" className="m-auto h-[30vh] md:h-[33vh] block" src={products[item].img} />
+                                            <img alt="ecommerce" className="m-auto h-[30vh] md:h-[33vh] block" src={filteredProducts[item].img} />
                                         </div>
                                         <div className="mt-4 text-center md:text-left">
-                                            <h3 className="text-gray-400 text-xs tracking-widest title-font mb-1">{capitalize(products[item].category)}</h3>
-                                            <h2 className="text-gray-50 title-font text-lg font-medium">{products[item].title}</h2>
-                                            <h2 className="text-gray-50 title-font text-xs font-medium">{products[item].slug}</h2>
-                                            <p className="text-gray-100 mt-5 mb-1">₹{products[item].price}</p>
+                                            <h3 className="text-gray-400 text-xs tracking-widest title-font mb-1">{filteredProducts[item].type}</h3>
+                                            <h2 className="text-gray-50 title-font text-lg font-medium">{filteredProducts[item].title.split('-')[1]}</h2>
+                                            <p className="text-gray-400 title-font text-xs font-medium">{filteredProducts[item].title.split('-')[0]}</p>
+                                            <h2 className="text-gray-50 title-font text-xs font-medium mt-3">{filteredProducts[item].slug}</h2>
+                                            <p className="text-gray-100 mt-5 mb-1">₹{filteredProducts[item].price}</p>
                                             <div className='flex items-center mb-2 mt-4 '>
                                                 <div className="mx-1">
-                                                    {products[item].size.includes('S') && <span className='border border-gray-300 px-2 py-1 mx-1 text-gray-400'>S</span>}
-                                                    {products[item].size.includes('M') && <span className='border border-gray-300 px-2 py-1 mx-1 text-gray-400'>M</span>}
-                                                    {products[item].size.startsWith('L') && <span className='border border-gray-300 px-2 py-1 mx-1 text-gray-400'>L</span>}
-                                                    {products[item].size.includes('XL') && <span className='border border-gray-300 px-2 py-1 mx-1 text-gray-400'>XL</span>}
-                                                    {products[item].size.includes('XXL') && <span className='border border-gray-300 px-2 py-1 mx-1 text-gray-400'>XXL</span>}
+                                                    {filteredProducts[item].size.includes('S') && sizeSpan('S')}
+                                                    {filteredProducts[item].size.includes('M') && sizeSpan('M')}
+                                                    {filteredProducts[item].size.startsWith('L') && sizeSpan('L')}
+                                                    {filteredProducts[item].size.startsWith('XL') && sizeSpan('XL')}
+                                                    {filteredProducts[item].size.startsWith('XXL') && sizeSpan('XXL')}
                                                 </div>
                                                 <div className='mt-0'>
-                                                    {products[item].color.includes('red') && <button className="border-2 border-gray-300 ml-1 bg-red-700 rounded-full w-6 h-6 focus:outline-none"></button>}
-                                                    {products[item].color.includes('white') && <button className="border-2 border-gray-900 ml-1 bg-white rounded-full w-6 h-6 focus:outline-none"></button>}
-                                                    {products[item].color.includes('blue') && <button className="border-2 border-gray-300 ml-1 bg-blue-700 rounded-full w-6 h-6 focus:outline-none"></button>}
-                                                    {products[item].color.includes('black') && <button className="border-2 border-gray-300 ml-1 bg-black rounded-full w-6 h-6 focus:outline-none"></button>}
-                                                    {products[item].color.includes('green') && <button className="border-2 border-gray-300 ml-1 bg-green-700 rounded-full w-6 h-6 focus:outline-none"></button>}
-                                                    {products[item].color.includes('yellow') && <button className="border-2 border-gray-300 ml-1 bg-yellow-400 rounded-full w-6 h-6 focus:outline-none"></button>}
-                                                    {products[item].color.includes('purple') && <button className="border-2 border-gray-300 ml-1 bg-purple-700 rounded-full w-6 h-6 focus:outline-none"></button>}
-                                                    {products[item].color.includes('orange') && <button className="border-2 border-gray-300 ml-1 bg-orange-700 rounded-full w-6 h-6 focus:outline-none"></button>}
+                                                    {filteredProducts[item].color.includes('red') && colorButton('red')}
+                                                    {filteredProducts[item].color.includes('blue') && colorButton('blue')}
+                                                    {filteredProducts[item].color.includes('black') && colorButton('black')}
+                                                    {filteredProducts[item].color.includes('green') && colorButton('green')}
+                                                    {filteredProducts[item].color.includes('yellow') && colorButton('yellow')}
+                                                    {filteredProducts[item].color.includes('purple') && colorButton('purple')}
+                                                    {filteredProducts[item].color.includes('orange') && colorButton('orange')}
+                                                    {filteredProducts[item].color.includes('white') && colorButton('white')}
+                                                    {filteredProducts[item].color.includes('gray') && colorButton('gray')}
+                                                    {filteredProducts[item].color.includes('pink') && colorButton('pink')}
                                                 </div>
                                             </div>
                                         </div>

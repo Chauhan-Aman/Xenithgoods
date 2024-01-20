@@ -33,12 +33,6 @@ const Sidebar = () => {
                     </div>
                     <p className='text-white ml-6 text-lg xl:block hidden'>Product List</p>
                 </Link>
-                {/* <Link href={'/admin/imageUploader'} className="flex xl:flex-row flex-col justify-start items-center py-4 my-4 hover:bg-indigo-700 hover:cursor-pointer">
-                    <div className='w-fit xl:pl-6'>
-                        <FiUpload color='white' size={'24px'} />
-                    </div>
-                    <p className='text-white ml-6 text-lg xl:block hidden'>ImageUploader</p>
-                </Link> */}
                 <Link href={'/admin/allorders'} className="flex xl:flex-row flex-col justify-start items-center py-4 my-4 hover:bg-indigo-700 hover:cursor-pointer">
                     <div className='w-fit xl:pl-6'>
                         <IoBagCheck color='white' size={'24px'} />

@@ -9,13 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.18",
     "@nextui-org/react": "^2.2.9",
     "crypto-js": "^4.2.0",
     "framer-motion": "^10.18.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.3",
-    "multer": "^1.4.5-lts.1",
     "next": "14.0.4",
     "paytmchecksum": "^1.5.1",
     "react": "^18",

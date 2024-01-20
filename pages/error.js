@@ -1,9 +1,14 @@
 import React from 'react'
 import Link from 'next/link'
+import Head from 'next/head'
 
 const Error = () => {
     return (
         <div className='md:min-h-screen min-h-[80vh] flex justify-center items-center bg-gray-900'>
+            <Head>
+                <title>404 - XenithGoods</title>
+                <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0" />
+            </Head>
             <main class="grid place-items-center px-6 py-24 sm:py-32 lg:px-8">
                 <div class="text-center">
                     <p class="text-4xl font-semibold text-gray-50">404</p>

@@ -106,7 +106,7 @@ export default function App({ Component, pageProps }) {
     setSubTotal(subt)
   }
 
-  const addToCart = async (itemCode, qty, price, name, size, variant, img) => {
+  const addToCart = async (itemCode, qty, price, name, size, variant, img, slug) => {
     if (Object.keys(cart).length == 0) {
       setKey(Math.random())
     }
@@ -115,7 +115,7 @@ export default function App({ Component, pageProps }) {
       newCart[itemCode].qty = cart[itemCode].qty + qty
     }
     else {
-      newCart[itemCode] = { qty: 1, price, name, size, variant, img }
+      newCart[itemCode] = { qty: 1, price, name, size, variant, img, slug }
     }
     const myuser = JSON.parse(localStorage.getItem('myuser'))
     if (myuser) {
@@ -159,9 +159,9 @@ export default function App({ Component, pageProps }) {
     }
   }
 
-  const buyNow = async (itemCode, qty, price, name, size, variant, img) => {
+  const buyNow = async (itemCode, qty, price, name, size, variant, img, slug) => {
     let newCart = {}
-    newCart[itemCode] = { qty: 1, price, name, size, variant, img }
+    newCart[itemCode] = { qty: 1, price, name, size, variant, img, slug }
     const myuser = JSON.parse(localStorage.getItem('myuser'))
     if (myuser) {
       await UpdateCart(newCart)
