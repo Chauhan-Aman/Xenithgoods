@@ -32,7 +32,6 @@ const Navbar = ({ isAdmin, user, Logout, cart, addToCart, removeFromCart, clearC
     }
 
     useEffect(() => {
-        console.log(cart)
         const updateResIcons = () => {
             if (window.innerWidth < 765) {
                 setResicon(true);

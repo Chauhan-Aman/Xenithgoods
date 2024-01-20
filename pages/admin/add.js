@@ -84,7 +84,6 @@ const Add = ({ isAdmin }) => {
       body: JSON.stringify(body),
     })
     let res = await a.json();
-    console.log(res)
     if (res.success) {
       toast.success("SuccessFully Added Product!", {
         position: "top-left",

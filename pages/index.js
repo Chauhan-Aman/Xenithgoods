@@ -62,10 +62,10 @@ export default function Home({ mens, womens, hoodies, sneakers }) {
         </div>
       </section>
 
-      <HomeCard title='MEN Wears' products={mens} />
-      <HomeCard title='WOMEN Wears' products={womens} />
-      <HomeCard title='HOODIES' products={hoodies} />
-      {/* <HomeCard title='SNEAKERS' products={sneakers} /> */}
+      <HomeCard link='men' title='MEN Wears' products={mens} />
+      <HomeCard link='women' title='WOMEN Wears' products={womens} />
+      <HomeCard link='hoodies' title='HOODIES' products={hoodies} />
+      {/* <HomeCard link='sneakers' title='SNEAKERS' products={sneakers} /> */}
 
     </>
   )

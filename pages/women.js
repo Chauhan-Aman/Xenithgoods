@@ -41,7 +41,6 @@ const Women = ({ products }) => {
             setTypebox(value);
         } else if (name === 'price') {
             setPrice(value);
-            console.log(value)
         }
     };
 

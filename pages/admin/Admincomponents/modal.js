@@ -82,7 +82,6 @@ const ModalContainer = ({ func, product, isOpen, onOpenChange }) => {
             body: JSON.stringify(body),
         })
         let res = await a.json();
-        console.log(res)
         if (res.success) {
             toast.success("SuccessFully Updated Product!", {
                 position: "top-left",
@@ -121,7 +120,6 @@ const ModalContainer = ({ func, product, isOpen, onOpenChange }) => {
             body: JSON.stringify(body),
         })
         let res = await a.json();
-        console.log(res)
         if (res.success) {
             toast.success("SuccessFully Deleted Product!", {
                 position: "top-left",

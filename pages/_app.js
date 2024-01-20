@@ -38,7 +38,6 @@ export default function App({ Component, pageProps }) {
       body: JSON.stringify(data),
     })
     let response = await res.json()
-    console.log(response.cart)
     setCart(response.cart)
     saveCart(response.cart)
   }
@@ -55,7 +54,6 @@ export default function App({ Component, pageProps }) {
       body: JSON.stringify(data),
     })
     let response = await res.json()
-    console.log(response)
   }
 
   useEffect(() => {
@@ -77,7 +75,7 @@ export default function App({ Component, pageProps }) {
         }
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       localStorage.clear();
     }
     if (myuser) {

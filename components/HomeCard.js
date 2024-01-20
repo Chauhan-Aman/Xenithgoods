@@ -2,7 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-const HomeCard = ({ title, products }) => {
+const HomeCard = ({ link, title, products }) => {
     const getUniqueProducts = () => {
         const uniqueProducts = [];
         const titles = [];
@@ -23,7 +23,7 @@ const HomeCard = ({ title, products }) => {
     return (
         <section className="text-gray-400 bg-gray-900 body-font">
             <div className="container px-5 pb-20 mx-auto w-[93vw]">
-                <Link href={'/tshirts'}>
+                <Link href={`${link}`}>
                     <h1 className='text-white pb-5 sm:pl-4 pl-2 text-lg sm:text-2xl'>Checkout Trending {title} &rarr;</h1>
                 </Link>
                 <div className='flex flex-wrap justify-center w-full mx-auto'>
