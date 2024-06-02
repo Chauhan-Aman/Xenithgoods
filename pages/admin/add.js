@@ -73,8 +73,10 @@ const Add = ({ isAdmin }) => {
 
   const AddProduct = async () => {
 
-    let data = { title, slug, desc, img: img ? img : imgupload, category, size, color, price, availableQty }
+    let data = { title, slug, desc, img: img ? img : imgupload, category, size, color, price, availableQty, type }
     let body = [data];
+
+    console.log(data)
 
     let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/addproducts`, {
       method: 'POST',
@@ -84,6 +86,7 @@ const Add = ({ isAdmin }) => {
       body: JSON.stringify(body),
     })
     let res = await a.json();
+    console.log(res)
     if (res.success) {
       toast.success("SuccessFully Added Product!", {
         position: "top-left",
