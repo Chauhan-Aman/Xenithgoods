@@ -15,7 +15,7 @@
     "framer-motion": "^12.23.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.3",
-    "next": "^15.3.5",
+    "next": "^16.3.3",
     "paytmchecksum": "^1.5.1",
     "react": "^18",
     "react-dom": "^18",
@@ -32,6 +32,6 @@
     "tailwindcss": "^3.3.0"
   },
   "engines": {
-    "node": "20.x"
+    "node": "24.x"
   }
 }
